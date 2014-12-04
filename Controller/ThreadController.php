@@ -389,6 +389,7 @@ class ThreadController extends Controller
         $displayDepth = $request->query->get('displayDepth');
         $sorter = $request->query->get('sorter');
         $thread = $this->container->get('fos_comment.manager.thread')->findThreadById($id);
+        $state = $request->query->get('comments_state');
 
         // We're now sure it is no duplicate id, so create the thread
         if (null === $thread) {
@@ -419,7 +420,8 @@ class ThreadController extends Controller
         $viewMode = $request->query->get('view', 'tree');
         switch ($viewMode) {
             case self::VIEW_FLAT:
-                $comments = $this->container->get('fos_comment.manager.comment')->findCommentsByThread($thread, $displayDepth, $sorter);
+                $comments = $this->container->get('fos_comment.manager.comment')
+                    ->findCommentsByThread($thread, $displayDepth, $sorter, $state);
 
                 // We need nodes for the api to return a consistent response, not an array of comments
                 $comments = array_map(function($comment) {
@@ -430,7 +432,8 @@ class ThreadController extends Controller
                 break;
             case self::VIEW_TREE:
             default:
-                $comments = $this->container->get('fos_comment.manager.comment')->findCommentTreeByThread($thread, $sorter, $displayDepth);
+                $comments = $this->container->get('fos_comment.manager.comment')
+                    ->findCommentTreeByThread($thread, $sorter, $displayDepth, $state);
                 break;
         }
 

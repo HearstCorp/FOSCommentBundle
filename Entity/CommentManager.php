@@ -63,7 +63,7 @@ class CommentManager extends BaseCommentManager
     /**
      * {@inheritdoc}
      */
-    public function findCommentsByThread(ThreadInterface $thread, $depth = null, $sorterAlias = null)
+    public function findCommentsByThread(ThreadInterface $thread, $depth = null, $sorterAlias = null, $state = null)
     {
         $qb = $this->repository
                 ->createQueryBuilder('c')
@@ -78,6 +78,11 @@ class CommentManager extends BaseCommentManager
 
             $qb->andWhere('c.depth < :depth')
                ->setParameter('depth', $depth + 1);
+        }
+
+        if (null !== $state) {
+            $qb->andWhere('c.state = :state')
+                ->setParameter('state', (int) $state);
         }
 
         $comments = $qb

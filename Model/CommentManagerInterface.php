@@ -32,10 +32,11 @@ interface CommentManagerInterface
      * @param ThreadInterface $thread
      * @param integer|null    $depth
      * @param string|null     $sorterAlias
+     * @param integer|null    $state
      *
      * @return CommentInterface[] An array of commentInterfaces
      */
-    public function findCommentsByThread(ThreadInterface $thread, $depth = null, $sorterAlias = null);
+    public function findCommentsByThread(ThreadInterface $thread, $depth = null, $sorterAlias = null, $state = null);
 
     /**
      * Returns all thread comments in a nested array.
@@ -48,6 +49,7 @@ interface CommentManagerInterface
      * @param ThreadInterface $thread      The thread for whom we want to find comments for.
      * @param string|null     $sorterAlias Optional name of the sorter to use.
      * @param integer|null    $depth       The depth
+     * @param integer|null    $state       The comments state (0 - visible, 1 - deleted, etc)
      *
      * @return array(
      *     0 => array(
@@ -67,7 +69,7 @@ interface CommentManagerInterface
      *         ...
      *     )
      */
-    public function findCommentTreeByThread(ThreadInterface $thread, $sorterAlias = null, $depth = null);
+    public function findCommentTreeByThread(ThreadInterface $thread, $sorterAlias = null, $depth = null, $state = null);
 
     /**
      * Returns a partial comment tree based on a specific parent commentId.
