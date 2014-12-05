@@ -444,6 +444,7 @@ class ThreadController extends Controller
                 'sorter' => 'date',
                 'thread' => $thread,
                 'view' => $viewMode,
+                'state' => $state,
             ))
             ->setTemplate(new TemplateReference('FOSCommentBundle', 'Thread', 'comments'));
 
