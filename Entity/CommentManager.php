@@ -122,6 +122,25 @@ class CommentManager extends BaseCommentManager
     }
 
     /**
+     * @param CommentInterface $comment
+     * @return mixed
+     */
+    public function markAllCommentTreeAsDeleted(CommentInterface $comment)
+    {
+        $qb = $this->repository->createQueryBuilder('c');
+        $qb->join('c.thread', 't')
+            ->update()
+            ->set('c.state', ':deletedState')
+            ->where('LOCATE(:path, CONCAT(\'/\', CONCAT(c.ancestors, \'/\'))) > 0')
+            ->setParameter('deletedState', CommentInterface::STATE_DELETED)
+            ->setParameter('path', "/{$comment->getId()}/");
+
+        $comments = $qb->getQuery()->execute();
+
+        return $comments;
+    }
+
+    /**
      * Performs persisting of the comment.
      *
      * @param CommentInterface $comment

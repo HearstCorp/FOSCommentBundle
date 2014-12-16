@@ -270,6 +270,8 @@ class ThreadController extends Controller
         $form = $this->container->get('fos_comment.form_factory.delete_comment')->createForm();
         $comment->setState($request->query->get('value', $comment::STATE_DELETED));
 
+        $this->container->get('fos_comment.manager.comment')->markAllCommentTreeAsDeleted($comment);
+
         $form->setData($comment);
 
         $view = View::create()
